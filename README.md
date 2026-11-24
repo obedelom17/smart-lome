@@ -1,7 +1,7 @@
 # Smart Lomé · Simulateur IoT
 
 Tableau de bord pédagogique pour l'exposé « Les villes intelligentes : l'IoT au service de la gouvernance urbaine » (IAI-Togo GLSI 3).
-Design : indigo, signaux aux couleurs du drapeau, Bricolage Grotesque + Instrument Sans.
+Design : fond blanc, interface épurée, une couleur d’action (bleu), couleurs d’état vert, orange, rouge. Bricolage Grotesque + Instrument Sans.
 Stack : React, Vite, Tailwind, Leaflet, Recharts, Framer Motion. Données simulées toutes les 2 s.
 
 ## Lancer

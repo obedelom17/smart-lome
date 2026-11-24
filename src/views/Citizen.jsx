@@ -32,11 +32,11 @@ function Ussd({ act }) {
   const dial = () => { setStep('menu'); setScreen(MENU) }
   return (
     <div className="space-y-3">
-      <div className="min-h-[170px] whitespace-pre-line rounded-xl bg-[#c8e6c0] p-4 font-mono text-[13px] leading-snug text-[#10240f]">{screen}</div>
+      <div className="min-h-[170px] whitespace-pre-line rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-[13px] leading-snug text-emerald-950">{screen}</div>
       {step === 'idle'
         ? <Btn onClick={dial} icon={Phone} className="w-full">Composer *888#</Btn>
         : <div className="flex gap-2"><input className="field" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && send()} placeholder="Votre choix" inputMode="numeric" /><Btn onClick={send} icon={Send}>Envoyer</Btn></div>}
-      <p className="text-xs text-white/45">Fonctionne sans internet ni smartphone : inclusion des populations peu connectées.</p>
+      <p className="text-xs text-slate-500">Fonctionne sans internet ni smartphone : inclusion des populations peu connectées.</p>
     </div>
   )
 }
@@ -51,12 +51,12 @@ export default function Citizen({ s, act }) {
     setOk(id); setF({ ...f, text: '' }); setTimeout(() => setOk(null), 2500)
   }
   return (
-    <div className="grid gap-5 xl:grid-cols-[420px_1fr]">
+    <div className="grid gap-6 xl:grid-cols-[420px_1fr] xl:items-start">
       <Card className="p-5">
-        <Head icon={Smartphone} title="Le citoyen, producteur de données" tag="Partie I.C · signalement mobile et USSD" color={C.violet} />
-        <div className="mb-4 grid grid-cols-2 gap-1 rounded-xl bg-white/5 p-1">
+        <Head icon={Smartphone} title="Le citoyen, producteur de données" tag="signalement mobile et USSD" color={C.violet} />
+        <div className="mb-4 grid grid-cols-2 gap-1 rounded-xl bg-slate-50 p-1">
           {[['app', 'Application'], ['ussd', 'USSD']].map(([k, l]) => (
-            <button key={k} onClick={() => setTab(k)} className={`rounded-lg py-2 text-sm font-medium transition ${tab === k ? 'bg-white/15' : 'text-white/55'}`}>{l}</button>
+            <button key={k} onClick={() => setTab(k)} className={`rounded-lg py-2 text-sm font-medium transition ${tab === k ? 'bg-white shadow-sm' : 'text-slate-600'}`}>{l}</button>
           ))}
         </div>
         {tab === 'app' ? (
@@ -67,25 +67,25 @@ export default function Citizen({ s, act }) {
             <select className="field" value={f.place} onChange={(e) => setF({ ...f, place: e.target.value })}>{PLACES.map((p) => <option key={p}>{p}</option>)}</select>
             <textarea className="field min-h-[90px]" placeholder="Décrivez le problème" value={f.text} onChange={(e) => setF({ ...f, text: e.target.value })} />
             <Btn onClick={submit} icon={Send} color={C.violet} className="w-full">Envoyer le signalement</Btn>
-            <AnimatePresence>{ok && <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex items-center gap-2 text-sm text-mint"><CheckCircle2 size={16} />Signalement {ok} envoyé</motion.p>}</AnimatePresence>
+            <AnimatePresence>{ok && <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex items-center gap-2 text-sm text-emerald-700"><CheckCircle2 size={16} />Signalement {ok} envoyé</motion.p>}</AnimatePresence>
           </div>
         ) : <Ussd act={act} />}
       </Card>
       <Card className="p-5">
         <Head icon={Users} title="Suivi des signalements" tag="Collectivité · entreprise · citoyen" color={C.mint} />
-        {s.reports.length === 0 && <p className="text-sm text-white/50">Aucun signalement. Envoyez-en un depuis l’application ou le code USSD.</p>}
+        {s.reports.length === 0 && <p className="text-sm text-sm text-slate-600">Aucun signalement. Envoyez-en un depuis l’application ou le code USSD.</p>}
         <div className="space-y-3">
           <AnimatePresence initial={false}>
             {s.reports.map((r) => (
-              <motion.div layout key={r.id} initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl bg-white/5 p-4">
+              <motion.div layout key={r.id} initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl bg-slate-50 p-4">
                 <div className="mb-3 flex items-center justify-between text-sm"><span className="font-semibold">{r.id} · {r.type}</span><span className="chip">{r.via}</span></div>
-                <p className="mb-3 text-xs text-white/50">{r.place} · {r.t} · {r.text}</p>
+                <p className="mb-3 text-xs text-slate-600">{r.place} · {r.t} · {r.text}</p>
                 <div className="flex items-center gap-2">
                   {STATUS.map((st, i) => (
                     <div key={st} className="flex flex-1 items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full transition-colors" style={{ background: i <= r.status ? C.mint : 'rgba(255,255,255,.15)' }} />
-                      <span className={`text-xs ${i <= r.status ? 'text-white' : 'text-white/35'}`}>{st}</span>
-                      {i < 2 && <span className="h-px flex-1" style={{ background: i < r.status ? C.mint : 'rgba(255,255,255,.12)' }} />}
+                      <span className="h-2.5 w-2.5 rounded-full transition-colors" style={{ background: i <= r.status ? C.mint : '#cbd5e1' }} />
+                      <span className={`text-xs ${i <= r.status ? 'text-slate-900' : 'text-slate-500'}`}>{st}</span>
+                      {i < 2 && <span className="h-px flex-1" style={{ background: i < r.status ? C.mint : '#e2e8f0' }} />}
                     </div>
                   ))}
                 </div>
