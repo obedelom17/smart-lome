@@ -3,6 +3,18 @@ import L from 'leaflet'
 import { C, binColor } from './ui'
 import { DEPOT } from './sim'
 
+// Clé gratuite MapTiler (voir README). Sans clé, la carte bascule automatiquement sur CARTO.
+const KEY = import.meta.env.VITE_MAPTILER_KEY
+const TILES = KEY
+  ? {
+      url: `https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=${KEY}`,
+      attribution: '&copy; <a href="https://www.maptiler.com/copyright/" target="_blank" rel="noreferrer">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a>'
+    }
+  : {
+      url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      attribution: '&copy; OpenStreetMap &copy; CARTO'
+    }
+
 const cache = {}
 const icon = (c, s, pulse) => {
   const k = `${c}|${s}|${pulse}`
@@ -34,7 +46,7 @@ export default function CityMap({ s, mod }) {
   return (
     <div className="relative h-full w-full">
       <MapContainer center={[6.165, 1.235]} zoom={12} zoomControl={false} scrollWheelZoom={false} className="h-full w-full">
-        <TileLayer attribution='&copy; OpenStreetMap &copy; CARTO' url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+        <TileLayer attribution={TILES.attribution} url={TILES.url} />
         <ZoomControl position="bottomright" />
         {s.route && (
           <>
