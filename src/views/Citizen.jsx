@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle2, Phone, Send, Smartphone, Users } from 'lucide-react'
 import { STATUS } from '../sim'
-import { Btn, C, Glass, Head } from '../ui'
+import { Btn, C, Card, Head } from '../ui'
 
 const TYPES = ['Déchets', 'Eau', 'Éclairage', 'Parking']
 const PLACES = ['Bè', 'Tokoin', 'Agoè', 'Adidogomé']
@@ -32,7 +32,7 @@ function Ussd({ act }) {
   const dial = () => { setStep('menu'); setScreen(MENU) }
   return (
     <div className="space-y-3">
-      <div className="min-h-[170px] whitespace-pre-line rounded-2xl bg-[#c8e6c0] p-4 font-mono text-[13px] leading-snug text-[#10240f]">{screen}</div>
+      <div className="min-h-[170px] whitespace-pre-line rounded-xl bg-[#c8e6c0] p-4 font-mono text-[13px] leading-snug text-[#10240f]">{screen}</div>
       {step === 'idle'
         ? <Btn onClick={dial} icon={Phone} className="w-full">Composer *888#</Btn>
         : <div className="flex gap-2"><input className="field" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && send()} placeholder="Votre choix" inputMode="numeric" /><Btn onClick={send} icon={Send}>Envoyer</Btn></div>}
@@ -52,7 +52,7 @@ export default function Citizen({ s, act }) {
   }
   return (
     <div className="grid gap-5 xl:grid-cols-[420px_1fr]">
-      <Glass className="p-5">
+      <Card className="p-5">
         <Head icon={Smartphone} title="Le citoyen, producteur de données" tag="Partie I.C · signalement mobile et USSD" color={C.violet} />
         <div className="mb-4 grid grid-cols-2 gap-1 rounded-xl bg-white/5 p-1">
           {[['app', 'Application'], ['ussd', 'USSD']].map(([k, l]) => (
@@ -70,20 +70,20 @@ export default function Citizen({ s, act }) {
             <AnimatePresence>{ok && <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex items-center gap-2 text-sm text-mint"><CheckCircle2 size={16} />Signalement {ok} envoyé</motion.p>}</AnimatePresence>
           </div>
         ) : <Ussd act={act} />}
-      </Glass>
-      <Glass className="p-5">
+      </Card>
+      <Card className="p-5">
         <Head icon={Users} title="Suivi des signalements" tag="Collectivité · entreprise · citoyen" color={C.mint} />
         {s.reports.length === 0 && <p className="text-sm text-white/50">Aucun signalement. Envoyez-en un depuis l’application ou le code USSD.</p>}
         <div className="space-y-3">
           <AnimatePresence initial={false}>
             {s.reports.map((r) => (
-              <motion.div layout key={r.id} initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-white/5 p-4">
+              <motion.div layout key={r.id} initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl bg-white/5 p-4">
                 <div className="mb-3 flex items-center justify-between text-sm"><span className="font-semibold">{r.id} · {r.type}</span><span className="chip">{r.via}</span></div>
                 <p className="mb-3 text-xs text-white/50">{r.place} · {r.t} · {r.text}</p>
                 <div className="flex items-center gap-2">
                   {STATUS.map((st, i) => (
                     <div key={st} className="flex flex-1 items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full transition-colors" style={{ background: i <= r.status ? C.mint : 'rgba(255,255,255,.15)', boxShadow: i <= r.status ? `0 0 10px ${C.mint}` : 'none' }} />
+                      <span className="h-2.5 w-2.5 rounded-full transition-colors" style={{ background: i <= r.status ? C.mint : 'rgba(255,255,255,.15)' }} />
                       <span className={`text-xs ${i <= r.status ? 'text-white' : 'text-white/35'}`}>{st}</span>
                       {i < 2 && <span className="h-px flex-1" style={{ background: i < r.status ? C.mint : 'rgba(255,255,255,.12)' }} />}
                     </div>
@@ -93,7 +93,7 @@ export default function Citizen({ s, act }) {
             ))}
           </AnimatePresence>
         </div>
-      </Glass>
+      </Card>
     </div>
   )
 }

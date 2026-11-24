@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { BrainCircuit, Database, Radio, Wifi } from 'lucide-react'
 import { sensorCount } from '../sim'
-import { C, Counter, Glass, Head, fmt } from '../ui'
+import { C, Counter, Card, Head, fmt } from '../ui'
 
 export default function Pipeline({ s }) {
   const n = sensorCount(s)
@@ -21,12 +21,12 @@ export default function Pipeline({ s }) {
   ]
   return (
     <div className="space-y-5">
-      <Glass className="p-6">
+      <Card className="p-6">
         <Head icon={Radio} title="Chaîne Capteur → Donnée → Décision" tag="Partie I.B · fonctionnement de l’IoT et du Big Data" />
         <div className="flex flex-col items-stretch gap-3 md:flex-row md:items-center md:gap-0">
           {stages.map((st, i) => (
             <div key={st.label} className="contents">
-              <motion.div whileHover={{ y: -4 }} className="relative flex-1 rounded-2xl border bg-white/5 p-4" style={{ borderColor: `${st.color}55`, boxShadow: `0 0 40px -18px ${st.color}` }}>
+              <motion.div whileHover={{ y: -4 }} className="relative flex-1 rounded-xl border bg-white/5 p-4" style={{ borderColor: `${st.color}55` }}>
                 <st.icon size={22} color={st.color} />
                 <p className="mt-3 text-sm font-semibold">{st.label}</p>
                 <p className="mb-3 text-xs text-white/45">{st.sub}</p>
@@ -41,19 +41,19 @@ export default function Pipeline({ s }) {
             </div>
           ))}
         </div>
-      </Glass>
+      </Card>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {v4.map((x) => (
-          <Glass key={x.k} className="p-5">
+          <Card key={x.k} className="p-5">
             <p className="text-sm font-semibold" style={{ color: x.c }}>{x.k}</p>
             <p className="mt-2 text-3xl font-bold">{x.v}</p>
             <p className="text-xs text-white/55">{x.u}</p>
             <p className="mt-3 text-xs leading-relaxed text-white/40">{x.d}</p>
-          </Glass>
+          </Card>
         ))}
       </div>
       <div className="grid gap-5 xl:grid-cols-2">
-        <Glass className="p-5">
+        <Card className="p-5">
           <Head icon={Database} title="Flux brut entrant" tag="Messages MQTT simulés" color={C.violet} />
           <div className="space-y-1.5 font-mono text-[12px]">
             {s.samples.map((m, i) => (
@@ -62,8 +62,8 @@ export default function Pipeline({ s }) {
               </motion.div>
             ))}
           </div>
-        </Glass>
-        <Glass className="p-5">
+        </Card>
+        <Card className="p-5">
           <Head icon={BrainCircuit} title="Décisions déclenchées" tag="Alertes issues de l’analyse" color={C.gold} />
           <div className="space-y-2">
             {alerts.length === 0 && <p className="text-sm text-white/50">Aucune alerte. Lancez une fuite d’eau depuis le module Eau.</p>}
@@ -74,7 +74,7 @@ export default function Pipeline({ s }) {
               </div>
             ))}
           </div>
-        </Glass>
+        </Card>
       </div>
     </div>
   )

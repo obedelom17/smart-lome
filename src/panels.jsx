@@ -1,23 +1,23 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Area, AreaChart, Bar as RBar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip as RT, XAxis, YAxis } from 'recharts'
 import { Activity, Battery, Droplets, Lightbulb, Navigation, ParkingSquare, Sun, Trash2, Zap, Wrench, AlertTriangle } from 'lucide-react'
-import { Bar, Btn, C, Counter, Glass, Head, Mini, Ring, binColor, fmt } from './ui'
+import { Bar, Btn, C, Counter, Card, Head, Mini, Ring, binColor, fmt } from './ui'
 
 const box = 'p-5 xl:h-[640px] overflow-y-auto'
-const tt = { contentStyle: { background: '#06120d', border: '1px solid rgba(255,255,255,.12)', borderRadius: 12, fontSize: 12 }, labelStyle: { color: '#9fc4b0' } }
+const tt = { contentStyle: { background: '#0b1020', border: '1px solid rgba(255,255,255,.12)', borderRadius: 12, fontSize: 12 }, labelStyle: { color: '#a9b4e0' } }
 const axis = { stroke: 'rgba(255,255,255,.35)', fontSize: 11, tickLine: false, axisLine: false }
 const sevColor = { info: C.mint, warn: C.gold, crit: C.red }
 
 export function OverviewPanel({ s }) {
   return (
-    <Glass className="flex max-h-[640px] min-h-[320px] flex-col p-5 xl:h-[640px]">
+    <Card className="flex max-h-[640px] min-h-[320px] flex-col p-5 xl:h-[640px]">
       <Head icon={Activity} title="Flux d’événements" tag="Décisions et alertes en temps réel" />
       <div className="flex-1 space-y-2 overflow-y-auto pr-1">
         <AnimatePresence initial={false}>
           {s.events.map((e) => (
             <motion.div layout key={e.id} initial={{ opacity: 0, x: 40, scale: 0.96 }} animate={{ opacity: 1, x: 0, scale: 1 }} exit={{ opacity: 0 }}
               className="flex gap-3 rounded-xl bg-white/5 p-3 text-sm">
-              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: sevColor[e.sev], boxShadow: `0 0 10px ${sevColor[e.sev]}` }} />
+              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: sevColor[e.sev] }} />
               <div className="min-w-0">
                 <p className="leading-snug">{e.text}</p>
                 <p className="mt-0.5 font-mono text-[11px] text-white/40">{e.t} · {e.kind}</p>
@@ -26,7 +26,7 @@ export function OverviewPanel({ s }) {
           ))}
         </AnimatePresence>
       </div>
-    </Glass>
+    </Card>
   )
 }
 
@@ -36,7 +36,7 @@ export function BinsPanel({ s, act }) {
   const full = s.bins.filter((b) => b.fill >= 85).length
   const ri = s.routeInfo
   return (
-    <Glass className={box}>
+    <Card className={box}>
       <Head icon={Trash2} title="Gestion intelligente des déchets" tag="Partie II.B · capteurs ultrasoniques" color={C.mint} />
       <div className="mb-4 flex items-center gap-5">
         <Ring value={avg} color={binColor(avg)}><p className="text-2xl font-bold"><Counter value={avg} suffix=" %" /></p><p className="text-[10px] text-white/50">remplissage moyen</p></Ring>
@@ -48,7 +48,7 @@ export function BinsPanel({ s, act }) {
       <Btn onClick={act.collect} icon={Navigation} className="mb-4 w-full">Lancer la tournée optimisée</Btn>
       <AnimatePresence>
         {ri && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mb-4 overflow-hidden rounded-2xl border border-mint/30 bg-mint/10 p-4 text-sm">
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mb-4 overflow-hidden rounded-xl border border-mint/30 bg-mint/10 p-4 text-sm">
             <p className="mb-2 font-semibold">{ri.count} conteneurs sur {ri.total} collectés</p>
             <div className="mb-1 flex justify-between text-xs text-white/60"><span>Tournée classique (tous les bacs)</span><span>{fmt(ri.trad, 1)} km</span></div>
             <Bar value={100} color={C.grey} />
@@ -66,7 +66,7 @@ export function BinsPanel({ s, act }) {
           </motion.div>
         ))}
       </div>
-    </Glass>
+    </Card>
   )
 }
 
@@ -77,7 +77,7 @@ export function LightsPanel({ s }) {
   const dim = s.lights.filter((l) => l.level === 30).length
   const data = [{ n: 'Classique', v: Math.round(s.kwhTrad), c: C.grey }, { n: 'Intelligent', v: Math.round(s.kwhSmart), c: C.gold }]
   return (
-    <Glass className={box}>
+    <Card className={box}>
       <Head icon={Lightbulb} title="Éclairage public adaptatif" tag="Partie II.A · détection de mouvement" color={C.gold}
         right={<span className="chip">{night ? 'Nuit' : 'Jour : éteint'}</span>} />
       <div className="mb-5 flex items-center gap-5">
@@ -91,7 +91,7 @@ export function LightsPanel({ s }) {
         {s.lights.map((l) => (
           <motion.div key={l.id} title={`${l.id} · ${l.level} %`} animate={{ opacity: l.level ? 0.35 + l.level / 160 : 0.15, scale: l.level === 100 ? 1.1 : 1 }}
             className="grid aspect-square place-items-center rounded-xl" style={{ background: l.level ? `${C.gold}33` : 'rgba(255,255,255,.05)', boxShadow: l.level === 100 ? `0 0 22px ${C.gold}88` : 'none' }}>
-            <Lightbulb size={18} color={l.level === 100 ? C.gold : '#a3894a'} />
+            <Lightbulb size={18} color={l.level === 100 ? C.gold : '#9c8440'} />
           </motion.div>
         ))}
       </div>
@@ -105,18 +105,18 @@ export function LightsPanel({ s }) {
           </BarChart>
         </ResponsiveContainer>
       </div>
-    </Glass>
+    </Card>
   )
 }
 
 export function ParkingPanel({ s }) {
   const free = s.parking.reduce((a, q) => a + q.free, 0)
   return (
-    <Glass className={box}>
+    <Card className={box}>
       <Head icon={ParkingSquare} title="Stationnement intelligent" tag="Partie II.A · capteurs de places libres" color={C.violet} />
-      <div className="mb-5 rounded-2xl border border-white/10 bg-black/40 p-5 text-center">
+      <div className="mb-5 rounded-xl border border-white/10 bg-black/40 p-5 text-center">
         <p className="text-xs text-white/50">Panneau d’affichage conducteurs</p>
-        <p className="font-mono text-5xl font-bold text-gold" style={{ textShadow: '0 0 24px #e8a317aa' }}><Counter value={free} /></p>
+        <p className="font-mono text-5xl font-bold text-gold" style={{}}><Counter value={free} /></p>
         <p className="text-xs text-white/50">places libres dans la ville</p>
       </div>
       <div className="space-y-4">
@@ -132,14 +132,14 @@ export function ParkingPanel({ s }) {
         })}
       </div>
       <p className="mt-5 text-xs leading-relaxed text-white/50">Le conducteur voit les places libres avant d’entrer dans le quartier : moins de tours, moins de trafic.</p>
-    </Glass>
+    </Card>
   )
 }
 
 export function WaterPanel({ s, act }) {
   const leaks = s.water.filter((w) => w.leak)
   return (
-    <Glass className={box}>
+    <Card className={box}>
       <Head icon={Droplets} title="Réseau d’eau potable" tag="Partie II.B · débitmètres et capteurs acoustiques" color={C.cyan} />
       <div className="mb-4 grid grid-cols-2 gap-2">
         <Mini label="Fuites actives" color={leaks.length ? C.red : C.mint}>{leaks.length}</Mini>
@@ -165,7 +165,7 @@ export function WaterPanel({ s, act }) {
           </motion.div>
         ))}
       </div>
-    </Glass>
+    </Card>
   )
 }
 
@@ -173,7 +173,7 @@ export function GridPanel({ s }) {
   const g = s.grid
   const cov = g.load ? Math.min(100, (g.solar / g.load) * 100) : 0
   return (
-    <Glass className={box}>
+    <Card className={box}>
       <Head icon={Zap} title="Réseau électrique intelligent" tag="Partie II.C · bidirectionnel" color={C.gold} />
       <div className="mb-4 flex items-center gap-5">
         <Ring value={cov} color={C.gold}><p className="text-2xl font-bold"><Counter value={cov} suffix=" %" /></p><p className="text-[10px] text-white/50">couvert par le solaire</p></Ring>
@@ -199,16 +199,16 @@ export function GridPanel({ s }) {
       </div>
       <div className="mb-4 grid grid-cols-2 gap-2">
         <Mini label={g.export > 0 ? 'Injection vers le réseau' : 'Appel au réseau'} color={g.export > 0 ? C.mint : C.red}><Counter value={g.export > 0 ? g.export : g.import} suffix=" kW" /></Mini>
-        <div className="rounded-2xl bg-white/5 p-3">
+        <div className="rounded-xl bg-white/5 p-3">
           <p className="mb-2 flex items-center gap-1 text-xs text-white/50"><Battery size={13} />Stockage batterie</p>
           <Bar value={g.battery} color={g.battery < 25 ? C.red : C.mint} h={10} />
           <p className="mt-1 font-mono text-xs text-white/60">{Math.round(g.battery)} %</p>
         </div>
       </div>
-      <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-3 text-xs text-white/60">
+      <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-3 text-xs text-white/60">
         <Sun size={16} color={C.gold} />
         <span>Réseau classique : un seul sens. Smart Grid : compteurs communicants, panneaux décentralisés, équilibrage automatique production / consommation.</span>
       </div>
-    </Glass>
+    </Card>
   )
 }

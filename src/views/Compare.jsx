@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Droplets, Lightbulb, ParkingSquare, Scale, Trash2 } from 'lucide-react'
-import { Bar, C, Counter, Glass, Head } from '../ui'
+import { Bar, C, Counter, Card, Head } from '../ui'
 
 const DOMAINS = [
   { id: 'l', icon: Lightbulb, name: 'Éclairage public', color: C.gold, gain: 0.6, unit: 'lampadaires', min: 1000, max: 20000, step: 500, def: 5000, trad: (n) => n * 400, label: 'kWh par an', note: 'Gradation de 50 à 70 % (valeur médiane 60 %) · 100 W · 4 000 h/an' },
@@ -10,11 +10,11 @@ const DOMAINS = [
   { id: 'p', icon: ParkingSquare, name: 'Recherche de stationnement', color: C.violet, gain: 0.5, unit: 'conducteurs par jour', min: 500, max: 10000, step: 500, def: 3000, trad: (n) => n * 12 * 365 / 60, label: 'heures perdues par an', note: 'Hypothèse : 12 min de recherche réduites à 6 min' }
 ]
 
-function Card({ d }) {
+function DomainCard({ d }) {
   const [n, setN] = useState(d.def)
   const t = d.trad(n), sm = t * (1 - d.gain)
   return (
-    <Glass className="p-5">
+    <Card className="p-5">
       <Head icon={d.icon} title={d.name} tag={d.label} color={d.color} right={<span className="rounded-full px-3 py-1 text-sm font-bold" style={{ background: `${d.color}26`, color: d.color }}>-{Math.round(d.gain * 100)} %</span>} />
       <div className="space-y-4">
         <div>
@@ -34,18 +34,18 @@ function Card({ d }) {
         </div>
         <p className="text-[11px] leading-relaxed text-white/40">{d.note}</p>
       </div>
-    </Glass>
+    </Card>
   )
 }
 
 export default function Compare() {
   return (
     <div className="space-y-5">
-      <Glass className="p-6 text-center">
+      <Card className="p-6 text-center">
         <Head icon={Scale} title="Gestion traditionnelle contre gestion intelligente" tag="Conclusion · synthèse chiffrée" />
         <p className="mx-auto max-w-3xl text-lg font-medium leading-snug md:text-2xl">« Dans quelle mesure les objets connectés peuvent-ils améliorer la qualité de vie urbaine et la gestion des ressources ? »</p>
-      </Glass>
-      <div className="grid gap-5 md:grid-cols-2">{DOMAINS.map((d) => <Card key={d.id} d={d} />)}</div>
+      </Card>
+      <div className="grid gap-5 md:grid-cols-2">{DOMAINS.map((d) => <DomainCard key={d.id} d={d} />)}</div>
       <p className="text-center text-xs text-white/40">Seule la fourchette de 50 à 70 % pour l’éclairage vient du plan de l’exposé. Les autres taux sont des hypothèses pédagogiques à sourcer avant la soutenance.</p>
     </div>
   )

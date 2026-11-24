@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Building2 } from 'lucide-react'
-import { C, Glass, Head } from '../ui'
+import { C, Card, Head } from '../ui'
 
 const CITIES = [
   { n: 'Singapour', color: C.cyan, init: 'Programme Smart Nation', tech: 'Jumeau numérique 3D (Virtual Singapore), capteurs et données urbaines intégrés', lesson: 'Une vision d’État pilotée de bout en bout. Les modèles numériques servent à simuler avant de décider.' },
@@ -15,7 +15,7 @@ export default function Cities() {
   const c = CITIES[i]
   return (
     <div className="space-y-5">
-      <Glass className="p-6">
+      <Card className="p-6">
         <Head icon={Building2} title="Quatre villes de référence" tag="Partie II.D · études de cas comparatives" color={c.color} />
         <div className="mb-5 flex flex-wrap gap-2">
           {CITIES.map((x, k) => (
@@ -28,15 +28,15 @@ export default function Cities() {
         <AnimatePresence mode="wait">
           <motion.div key={c.n} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="grid gap-4 md:grid-cols-3">
             {[['Initiative phare', c.init], ['Technologies', c.tech], ['Leçon transférable à Lomé', c.lesson]].map(([k, v]) => (
-              <div key={k} className="rounded-2xl border bg-white/5 p-5" style={{ borderColor: `${c.color}44` }}>
+              <div key={k} className="rounded-xl border bg-white/5 p-5" style={{ borderColor: `${c.color}44` }}>
                 <p className="mb-2 text-sm font-semibold" style={{ color: c.color }}>{k}</p>
                 <p className="text-sm leading-relaxed text-white/80">{v}</p>
               </div>
             ))}
           </motion.div>
         </AnimatePresence>
-      </Glass>
-      <Glass className="overflow-x-auto p-5">
+      </Card>
+      <Card className="overflow-x-auto p-5">
         <table className="w-full min-w-[640px] text-left text-sm">
           <thead className="text-white/50"><tr><th className="pb-3 font-medium">Ville</th><th className="pb-3 font-medium">Initiative</th><th className="pb-3 font-medium">Technologies</th></tr></thead>
           <tbody>
@@ -47,7 +47,7 @@ export default function Cities() {
             ))}
           </tbody>
         </table>
-      </Glass>
+      </Card>
     </div>
   )
 }
